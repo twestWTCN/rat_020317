@@ -55,7 +55,7 @@ sigpow(sigpow==0) = NaN;
 if ~isempty(ylimd)
     ylim(ylimd);
 end
-xlim([4 100]);
+xlim([4 75]);
 clustat = [];
 if sum(stat.mask)>0
     for i = 1:size(stat.posclusters,2)
@@ -69,7 +69,7 @@ if sum(stat.mask)>0
             end
             freqcen = mean(group);
             [figx figy] = dsxy2figxy(gca, freqcen-5, ylimd(2)*0.9);
-            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.4f')]},'FitBoxToText','on','LineStyle','none','fontsize',8);
+            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',12);
             clustat = [clustat; min(stat.freq(1,group)) max(stat.freq(1,group)) stat.posclusters(i).clusterstat stat.posclusters(i).prob];
         end
     end
@@ -84,7 +84,7 @@ if sum(stat.mask)>0
             end
             freqcen = mean(group);
             [figx figy] = dsxy2figxy(gca, freqcen-5, ylimd(2)*0.9);
-            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',8);
+            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',12);
             clustat = [clustat; min(stat.freq(1,group)) max(stat.freq(1,group)) stat.negclusters(i).clusterstat stat.negclusters(i).prob];
         end
     end

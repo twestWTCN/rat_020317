@@ -1,7 +1,7 @@
 function dataviewer_rat_100816(R)
 for scale = 1:2
-    for cond = 1:2
-        for sub  = 1:length(R.subnames{cond})
+    for cond = 2 %1:2
+        for sub  = 7 %1:length(R.subnames{cond})
             set(0,'DefaultAxesFontSize',16)
             set(0,'defaultlinelinewidth',1.5)
             set(0,'DefaultLineMarkerSize',5)
@@ -20,12 +20,12 @@ for scale = 1:2
                 hold on
                 plot(processed.time{1},processed.trial{1}(i,:)+ofset,'color',cmap(2,:),'linewidth',2.5)
             end
-            xlabel('Time (s)','FontSize',18); ylabel('Amplitude uV','FontSize',18); ylim([-.5 size(raw.trial{1},1)*0.5])
+            xlabel('Time (s)','FontSize',24,'FontWeight','bold'); ylabel('Amplitude uV','FontSize',24,'FontWeight','bold'); ylim([-.5 size(raw.trial{1},1)*0.5])
             if scale == 2
                 xlim([30 35])
             end
-            title(['Rat ' FTdata.subject],'FontSize',18,'FontWeight','bold');
-            h = legend({'raw','preprocessed'});
+            title(['Rat ' FTdata.subject],'FontSize',28,'FontWeight','bold');
+            h = legend({'raw','preprocessed'},'FontSize',18,'FontWeight','bold');
             set(h,'Position',[0.0118    0.0204    0.1272    0.1212])
             set(gca,'Position',[0.1834    0.0625    0.7855    0.8778])
             set(gca,'YTick',[0:0.5:(size(raw.trial{1},1)-1)*0.5])
@@ -53,11 +53,12 @@ for scale = 1:2
                     fyA = FTdata.nsPow.Powspctrm(i,:);
                     plot(fxA,fyA,'color',cmap(i,:)); hold on
                 end
-                xlabel('Frequency (Hz)','fontsize',18); ylabel('log Normalised Magnitude','fontsize',18)
-                title(['Rat ' FTdata.subject ' Spectral Estimate'],'FontSize',18,'FontWeight','bold');
-                h = legend(raw.label);
+                xlabel('Frequency (Hz)','fontsize',24,'FontWeight','bold'); ylabel('log Normalised Magnitude','fontsize',24,'FontWeight','bold')
+                title(['Rat ' FTdata.subject ' Spectral Estimate'],'FontSize',28,'FontWeight','bold');
+                h = legend(raw.label,18,'FontWeight','bold');
                 set(h,'FontSize',10)
-                xlim(log10([4 100]))
+                set(gcf,'Position',[1038 363 753 636])
+                xlim(log10([8 100]))
                 %                 l = axes;
                 %                 for i = 1:size(raw.trial{1},1)
                 %                     fxA = FTdata.nsPow.freq;
@@ -72,7 +73,7 @@ for scale = 1:2
                 end
                 set(gca,'XTickLabel',xtlab)
                 grid on
-                set(gcf,'Position',[1038 363 753 636])
+                
                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\preprocessing\' FTdata.subject '_spectra'],'-jpg',0,'-r150'); close all
             end
         end

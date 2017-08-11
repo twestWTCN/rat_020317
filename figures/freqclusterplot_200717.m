@@ -38,18 +38,14 @@ else
 end
 sigfreq = stat.mask.*stat.freq;
 sigfreq(sigfreq==0) = NaN;
-sigpow = stat.mask.*(nanmean(nanmean(ON,1),2).*5);
+sigpow = stat.mask.*(nanmean(nanmean(ON,1),2).*5.1);
 if ~isempty(ylimd)
-    sigpow = (stat.mask.*ylimd(2)*0.75);
+    sigpow = stat.mask.*ylimd(2)*0.93;
 end
 % sigpow = stat.mask.*1; %(nanmean(nanmean(ON,1),2).*7.5);
 
 sigpow(sigpow==0) = NaN;
-if sum(~isnan(sigpow))<2
-    scatter(sigfreq,sigpow,'ks','filled');
-else
-    plot(sigfreq,sigpow,'k','linewidth',6);
-end
+
 if ~isempty(ylimd)
     ylim(ylimd);
 end
@@ -59,26 +55,47 @@ if sum(stat.mask)>0
     for i = 1:size(stat.posclusters,2)
         if stat.posclusters(i).prob<alpha
             labs = stat.posclusterslabelmat;
-            freqcen = mean(stat.freq(1,find(labs==i)));
-            if freqcen<48 || freqcen>52
-                [figx figy] = dsxy2figxy(gca, freqcen-5, max(sigpow)*1.07);
-                h = annotation('textbox',[figx figy .01 .01],'String',{['(+) P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',8);
-                clustat = [clustat; min(stat.freq(1,find(labs==i))) max(stat.freq(1,find(labs==i))) stat.posclusters(i).prob];
+            group = find(labs==i);
+            if length(group)<2
+                scatter(sigfreq(group),sigpow(group),'ks','filled');
+            else
+                plot(sigfreq(group),sigpow(group),'k','linewidth',6);
             end
+            freqcen = sigfreq(fix(mean(group)));
+            if min(sigfreq(group))<6
+                shift = 3;
+            else
+                shift = 5;
+            end
+            [figx figy] = dsxy2figxy(gca, freqcen-shift, (max(sigpow)*1.055));
+            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',10,'fontweight','bold');
+            clustat = [clustat; min(stat.freq(1,group)) max(stat.freq(1,group)) stat.posclusters(i).clusterstat stat.posclusters(i).prob];
         end
     end
     for i = 1:size(stat.negclusters,2)
         if stat.negclusters(i).prob<alpha
             labs = stat.negclusterslabelmat;
-            find(labs==i)
-            freqcen = mean(stat.freq(1,find(labs==i)));
-            if freqcen<48 || freqcen>52
-                [figx figy] = dsxy2figxy(gca, freqcen-5, max(sigpow)*1.07);
-                h = annotation('textbox',[figx figy .01 .01],'String',{['(-) P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',8);
-                clustat = [clustat; min(stat.freq(1,find(labs==i))) max(stat.freq(1,find(labs==i))) stat.negclusters(i).prob];
+            group = find(labs==i);
+            if length(group)<2
+                scatter(sigfreq(group),sigpow(group),'ks','filled');
+            else
+                plot(sigfreq(group),sigpow(group),'k','linewidth',6);
             end
+            freqcen = sigfreq(fix(mean(group)));
+            if min(sigfreq(group))<6
+                shift = 3;
+            else
+                shift = 5;
+            end
+            [figx figy] = dsxy2figxy(gca, freqcen-shift, (max(sigpow)*1.055));
+            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',10,'fontweight','bold');
+            clustat = [clustat; min(stat.freq(1,group)) max(stat.freq(1,group)) stat.negclusters(i).clusterstat stat.negclusters(i).prob];
         end
     end
 end
+a = get(gca,'XTickLabel');
+set(gca,'XTickLabel',a,'fontsize',18)
+a = get(gca,'YTickLabel');
+set(gca,'YTickLabel',a,'fontsize',18)
 xlabel('Frequency (Hz)'); ylabel(ylab); title(titular);
 grid on
