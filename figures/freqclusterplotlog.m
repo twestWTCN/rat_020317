@@ -26,19 +26,19 @@ OFF= log10(OFF);
 ON = log10(ON);
 
 if dir == 1
-    plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
     hold on
     ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
     
-    plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
     ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(1,:),'linewidth',3);
 else
-    plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
     hold on
     ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
     
-    plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
     ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(2,:),'linewidth',3);
 end
@@ -70,8 +70,8 @@ if sum(stat.mask)>0
             labs = stat.posclusterslabelmat;
             freqcen = mean(stat.freq(1,find(labs==i)));
             freqcen = log10(freqcen);
-            [figx figy] = dsxy2figxy(gca, freqcen-0.08, log10(ylimd(2)*0.8)); %-log10(5)
-            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',10,'fontweight','bold');
+            [figx figy] = dsxy2figxy(gca, freqcen-0.08, log10(ylimd(2)*0.7)); %-log10(5)
+            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',12,'fontweight','bold');
             clustat = [clustat; min(stat.freq(1,find(labs==i))) max(stat.freq(1,find(labs==i))) stat.posclusters(i).clusterstat stat.posclusters(i).prob];
             
         end
@@ -81,8 +81,8 @@ if sum(stat.mask)>0
             labs = stat.negclusterslabelmat;
             freqcen = mean(stat.freq(1,find(labs==i)));
                 freqcen = log10(freqcen);
-                [figx figy] = dsxy2figxy(gca, freqcen-0.08, log10(ylimd(2)*0.8));
-                h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',10,'fontweight','bold');
+                [figx figy] = dsxy2figxy(gca, freqcen-0.08, log10(ylimd(2)*0.7));
+                h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',12,'fontweight','bold');
                 clustat = [clustat; min(stat.freq(1,find(labs==i))) max(stat.freq(1,find(labs==i))) stat.posclusters(i).clusterstat stat.negclusters(i).prob];
         end
     end

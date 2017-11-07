@@ -7,7 +7,7 @@ dbstop if error
 %% Build header to be used for analysis programs
 R = buildheader_rat;
 % Select methods
-section = [3];    % Sections
+section = [1];    % Sections
 procs = {[7]...           % Analysis
     [1:2]...           % Statistics
     [2]}...     % Plotting
@@ -28,7 +28,7 @@ for o = 1:length(section)
                         R.clear.pp = 1;
                         preprocess_rat_111016b(R)
                     case 3 % Preprocesing Long Epoch
-                        %                         %                         R.clear.ppe = 0;
+                        %                         R.clear.ppe = 0;
                         %                         R.longE_length = 10;
                         %                         preprocess_longE_rat_050816(R)
                         %% Spectral Analyses
@@ -85,8 +85,9 @@ for o = 1:length(section)
                         set(0,'defaultlinelinewidth',3)
                         set(0,'DefaultLineMarkerSize',9)
                         set(0, 'DefaultFigurePosition', [12    57   605   550]);
-                        R.spectra.featspecs = {'npd'}; %'nsIcoh','npd','nsicoh','npd','npdX','npdY','npdZ','npdW'}; %'ncohXY'}; 'nsPow', %power','coherence','wpli','npd','npdX','npdY','npdZ','npdW'}; %'npd','dtf','power','coherence','wpli','granger','icoherence','npd'};%,'power','coherence','wpli'
-                        plot_gen_rat_statspectra_060317(R)
+                        R.spectra.featspecs = {'npdX','npdW','npdZ','npdZ'}; %,'npdX','npdW','npdZ','npdZ'} %,'npdY','npdZ'}; %'nsPow''nsIcoh','npd','nsicoh','npd','npdX','npdY','npdZ','npdW'}; %'ncohXY'}; 'nsPow', %power','coherence','wpli','npd','npdX','npdY','npdZ','npdW'}; %'npd','dtf','power','coherence','wpli','granger','icoherence','npd'};%,'power','coherence','wpli'
+%                         plot_gen_rat_statspectra_060317(R)
+                        plot_gen_rat_statspectra_200717b(R)
                     case 3 % Boxplots
                         R.boxplot.featspecs =  {'dfaae'};%,'dfaae','power','coh','wpli','npd','pow'};
                         boxplot_ttest_rat_050816(R);

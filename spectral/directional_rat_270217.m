@@ -1,5 +1,5 @@
 function directional_rat_270217(R)
-granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 1; npdY = 1; npdX = 1; npd = 1;  npdW = 1; ncohXY = 0;
+granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 0; npdY = 0; npdX = 0; npd = 1;  npdW = 0; ncohXY = 0;
 
 for cond = 1:2;
     for sub  = 1:length(R.subnames{cond})
@@ -54,7 +54,7 @@ for cond = 1:2;
                 x = FTdata.ContData.trial{1}(chcombs(1,i),:);
                 y = FTdata.ContData.trial{1}(chcombs(2,i),:);
                 %                 [f13,~,~]=sp2a2_R2_mt(x',y',FTdata.fsample,7,'M1');
-                [f13,~,~]=sp2a2_R2_mt(x',y',FTdata.fsample,8,'M1');
+                [f13,~,~]=sp2a2_R2_mt(x',y',FTdata.fsample,7,'M1');
                 npdspctrm{1,1}(chcombs(1,i),chcombs(2,i),:) = f13(:,10);
                 npdspctrm{1,2}(chcombs(1,i),chcombs(2,i),:) = f13(:,12);
                 npdspctrm{1,3}(chcombs(1,i),chcombs(2,i),:) = f13(:,11);
@@ -97,7 +97,7 @@ for cond = 1:2;
             end
             FTdata.nsPow.Powspctrm = nsPowSpect;
             FTdata.nsPow.freq =  f13(:,1);
-            FTdata.nsPow.dimord = 'chan_chan_freq';
+            FTdata.nsPow.dimord = 'chan_freq';
             FTdata.nsPow.label = FTdata.label;
             
         end
