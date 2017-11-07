@@ -41,8 +41,8 @@ if  strcmp(getenv('COMPUTERNAME'), 'FREE') == 1
     R.datapath = 'C:\home\data\ratdata_050816\';
     R.analysispath = 'C:\Users\twest\Documents\Work\PhD\LitvakProject\rat_data\pipeline\';
 else
-    R.datapath = 'C:\home\data\TimExtracts310516\';
-    R.analysispath = 'C:\Users\Tim\Documents\Work\LitvakProject\rat_data\pipeline\';
+    R.datapath = 'C:\home\data\ratdata_050816\';
+    R.analysispath = 'C:\Users\Tim\Documents\Work\GIT\';
     
 end
 
