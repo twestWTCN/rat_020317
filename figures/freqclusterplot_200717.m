@@ -20,19 +20,19 @@ OFF(:,lineind) = NaN(size(OFF,1),size(lineind,2));
 ON(:,lineind) = NaN(size(ON,1),size(lineind,2));
 
 if dir == 1
-    plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
+    % %     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
     hold on
     ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
     
-    plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
+    %     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
     ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(1,:),'linewidth',3);
 else
-    plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
+    %     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
     hold on
     ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
-    
-    plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
+    %
+    %     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
     ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(2,:),'linewidth',3);
 end
@@ -67,9 +67,12 @@ if sum(stat.mask)>0
             else
                 shift = 5;
             end
+            
             [figx figy] = dsxy2figxy(gca, freqcen-shift, (max(sigpow)*1.055));
-            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',10,'fontweight','bold');
-            clustat = [clustat; min(stat.freq(1,group)) max(stat.freq(1,group)) stat.posclusters(i).clusterstat stat.posclusters(i).prob];
+            if ~isnan(figx)
+                h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',10,'fontweight','bold');
+                clustat = [clustat; min(stat.freq(1,group)) max(stat.freq(1,group)) stat.posclusters(i).clusterstat stat.posclusters(i).prob];
+            end
         end
     end
     for i = 1:size(stat.negclusters,2)
@@ -93,9 +96,11 @@ if sum(stat.mask)>0
         end
     end
 end
-a = get(gca,'XTickLabel');
-set(gca,'XTickLabel',a,'fontsize',18)
-a = get(gca,'YTickLabel');
-set(gca,'YTickLabel',a,'fontsize',18)
-xlabel('Frequency (Hz)'); ylabel(ylab); title(titular);
+% a = get(gca,'XTickLabel');
+% b = get(gca,'YTickLabel');
+xlabel('Frequency (Hz)','fontsize',16); ylabel(ylab,'fontsize',16);% title(titular);
+
+
+% set(gca,'XTickLabel',a,'fontsize',18)
+% set(gca,'YTickLabel',b,'fontsize',18)
 grid on

@@ -26,19 +26,19 @@ OFF= log10(OFF);
 ON = log10(ON);
 
 if dir == 1
-    plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
     hold on
     ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
     
-    plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
     ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(1,:),'linewidth',3);
 else
-    plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
     hold on
     ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
     
-    plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
+%     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
     ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(2,:),'linewidth',3);
 end

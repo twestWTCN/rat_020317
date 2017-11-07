@@ -1,5 +1,5 @@
 function directional_rat_270217(R)
-granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 1; npdY = 1; npdX = 1; npd = 0;  npdW = 1; ncohXY = 0;
+granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 0; npdY = 0; npdX = 0; npd = 1;  npdW = 0; ncohXY = 0;
 
 for cond = 1:2;
     for sub  = 1:length(R.subnames{cond})
@@ -97,7 +97,7 @@ for cond = 1:2;
             end
             FTdata.nsPow.Powspctrm = nsPowSpect;
             FTdata.nsPow.freq =  f13(:,1);
-            FTdata.nsPow.dimord = 'chan_chan_freq';
+            FTdata.nsPow.dimord = 'chan_freq';
             FTdata.nsPow.label = FTdata.label;
             
         end
