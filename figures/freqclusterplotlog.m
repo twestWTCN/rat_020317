@@ -20,47 +20,41 @@ OFF(:,lineind) = NaN(size(OFF,1),size(lineind,2));
 ON(:,lineind) = NaN(size(ON,1),size(lineind,2));
 
 
-%
+% Now plot
 fxA =log10(fxA);
-OFF= log10(OFF);
-ON = log10(ON);
+figure
+[ax(1), hp] = boundedline(fxA,-mean(log10(OFF)),std(log10(OFF)),'cmap',cmap(1,:),'alpha','transparency',0.45);
+%     hl(1).LineWidth = 2;
+%     hout = outlinebounds(hl, hp);
+hold on
+% plot(repmat(fxA,size(OFF,1),1)',-log10(OFF)','Color',cmap(1,:),'LineStyle','--','linewidth',1);
 
-if dir == 1
-%     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
-    hold on
-    ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
-    
-%     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
-    hold on
-    ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(1,:),'linewidth',3);
-else
-%     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
-    hold on
-    ax(2) = plot(fxA,nanmean(OFF,1),'color',cmap(1,:),'linewidth',3);
-    
-%     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
-    hold on
-    ax(1) = plot(fxA,nanmean(ON,1),'color',cmap(2,:),'linewidth',3);
-end
+[ax(2), hp] = boundedline(fxA,-mean(log10(ON)),std(log10(ON)),'cmap',cmap(2,:),'alpha','transparency',0.45);
+%     hl(1).LineWidth = 2;
+%     hout = outlinebounds(hl, hp);
+hold on
+% plot(repmat(fxA,size(ON,1),1)',-log10(ON)','Color',cmap(2,:),'LineStyle','--','linewidth',1);
+
 % emsure mask at 49-51 is zero
+stat.mask = stat.prob<alpha
 stat.mask(stat.freq> 49 & stat.freq < 51) = 0;
 
 sigfreq = stat.mask.*stat.freq;
 sigfreq(sigfreq==0) = NaN;
 sigpow = stat.mask.*(nanmean(nanmean(ON,1),2));
 if ~isempty(ylimd)
-    sigpow = stat.mask.*log10(ylimd(2))*1.2;
+    sigpow = stat.mask.*(ylimd(2))*1.42;
 end
 % sigpow = stat.mask.*1; %(nanmean(nanmean(ON,1),2).*7.5);
 
 sigpow(sigpow==0) = NaN;
 if sum(~isnan(sigpow))<2
-    scatter(sigfreq,sigpow,'ks','filled');
+    scatter(log10(sigfreq),sigpow,'ks','filled');
 else
     plot(log10(sigfreq),sigpow,'k','linewidth',6);
 end
 if ~isempty(ylimd)
-    ylim(log10(ylimd));
+    ylim(ylimd);
 end
 xlim(log10([4 100]));
 clustat = [];
@@ -70,7 +64,7 @@ if sum(stat.mask)>0
             labs = stat.posclusterslabelmat;
             freqcen = mean(stat.freq(1,find(labs==i)));
             freqcen = log10(freqcen);
-            [figx figy] = dsxy2figxy(gca, freqcen-0.08, log10(ylimd(2)*0.7)); %-log10(5)
+            [figx figy] = dsxy2figxy(gca, freqcen-0.12, (ylimd(2)*1.25)); %-log10(5)
             h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.posclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',12,'fontweight','bold');
             clustat = [clustat; min(stat.freq(1,find(labs==i))) max(stat.freq(1,find(labs==i))) stat.posclusters(i).clusterstat stat.posclusters(i).prob];
             
@@ -80,10 +74,10 @@ if sum(stat.mask)>0
         if stat.negclusters(i).prob<alpha
             labs = stat.negclusterslabelmat;
             freqcen = mean(stat.freq(1,find(labs==i)));
-                freqcen = log10(freqcen);
-                [figx figy] = dsxy2figxy(gca, freqcen-0.08, log10(ylimd(2)*0.7));
-                h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',12,'fontweight','bold');
-                clustat = [clustat; min(stat.freq(1,find(labs==i))) max(stat.freq(1,find(labs==i))) stat.posclusters(i).clusterstat stat.negclusters(i).prob];
+            freqcen = log10(freqcen);
+            [figx figy] = dsxy2figxy(gca, freqcen-0.12, (ylimd(2)*1.25));
+            h = annotation('textbox',[figx figy .01 .01],'String',{['P = ' num2str(stat.negclusters(i).prob,'%.3f')]},'FitBoxToText','on','LineStyle','none','fontsize',12,'fontweight','bold');
+            clustat = [clustat; min(stat.freq(1,find(labs==i))) max(stat.freq(1,find(labs==i))) stat.posclusters(i).clusterstat stat.negclusters(i).prob];
         end
     end
 end
