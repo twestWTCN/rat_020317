@@ -7,7 +7,7 @@ R.bbounds = [5 10; 14 24; 25 40]; % Bands of interest
 R.bandnames = {'Alpha','Low Beta','High beta'};
 R.bandnames_nospace = {'alpha','low_beta','high_beta'};
 R.source_inport_names = {'fEEG','GP','STR','STN'};
-R.sourcenames = {'M1','GPe','STR','STN'};
+R.sourcenames = {'M2','GPe','STR','STN'};
 R.condnames = {'control','lesion'};
 R.FOI = [4 100]; % Frequencies of interest
 R.pp.ds = 250; % sample rate to downsample to
@@ -41,8 +41,8 @@ if  strcmp(getenv('COMPUTERNAME'), 'FREE') == 1
     R.datapath = 'C:\home\data\ratdata_050816\';
     R.analysispath = 'C:\Users\twest\Documents\Work\PhD\LitvakProject\rat_data\pipeline\';
 else
-    R.datapath = 'C:\home\data\TimExtracts310516\';
-    R.analysispath = 'C:\Users\Tim\Documents\Work\LitvakProject\rat_data\pipeline\';
+    R.datapath = 'C:\home\data\ratdata_050816\';
+    R.analysispath = 'C:\Users\Tim\Documents\Work\GIT\';
     
 end
 

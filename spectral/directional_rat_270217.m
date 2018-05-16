@@ -1,5 +1,5 @@
 function directional_rat_270217(R)
-granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 0; npdY = 0; npdX = 0; npd = 1;  npdW = 0; ncohXY = 0;
+granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 0; npdY = 0; npdX = 0; npd = 0;  npdW = 1; ncohXY = 0;
 
 for cond = 1:2;
     for sub  = 1:length(R.subnames{cond})
@@ -95,11 +95,19 @@ for cond = 1:2;
                 FTdata = rmfield(FTdata,'nsPow');
             catch
             end
-            FTdata.nsPow.Powspctrm = nsPowSpect;
+            ft = f13(:,1); fxx = nsPowSpect;
+            res= ft(2)-ft(1); % Frequency resolution
+            % Normalised
+            for i = 1:size(fxx,1)
+                fxxi = fxx(i,:);
+                fxxi(round((48-R.FOI(1))/res+1):round((52-R.FOI(1))/res+1)) = mean(fxxi(round((46-R.FOI(1))/res+1):round((48-R.FOI(1))/res+1)));    % Correct powerline to mean power in prior 6 Hz
+                fxxi = fxxi/(res*trapz(fxxi(round((4-R.FOI(1))/res)+1:round((48-R.FOI(1))/res)+1))); 
+                fxx(i,:) = fxxi;
+            end
+            FTdata.nsPow.Powspctrm = fxx;
             FTdata.nsPow.freq =  f13(:,1);
             FTdata.nsPow.dimord = 'chan_freq';
             FTdata.nsPow.label = FTdata.label;
-            
         end
         
         if dtf == 1
@@ -184,7 +192,7 @@ for cond = 1:2;
             for i = 1:length(chcombs)
                 x = FTdata.ContData.trial{1}(chcombs(1,i),:);
                 y = FTdata.ContData.trial{1}(chcombs(2,i),:);
-                z =  mean(FTdata.ContData.trial{1}(fix(mean(find(strncmp('M1', FTdata.label,2)))),:),1);
+                z =  mean(FTdata.ContData.trial{1}(fix(mean(find(strncmp('M2', FTdata.label,2)))),:),1);
                 [f13,~,~]=sp2_R2a_pc1(x,y,z,FTdata.fsample,2^7);
                 npdWspctrm{1,1}(chcombs(1,i),chcombs(2,i),:) = f13(:,10);
                 npdWspctrm{1,2}(chcombs(1,i),chcombs(2,i),:) = f13(:,12);
@@ -211,7 +219,7 @@ for cond = 1:2;
                     end
                     x = FTdata.ContData.trial{1}(chcombs(1,i),:);
                     y = FTdata.ContData.trial{1}(chcombs(2,i),:);
-                    z1 =  FTdata.ContData.trial{1}(find(strncmp('M1', FTdata.label,3)),:);
+                    z1 =  FTdata.ContData.trial{1}(find(strncmp('M2', FTdata.label,3)),:);
                     z2 = FTdata.ContData.trial{1}(find(strncmp('STN', FTdata.label,3)),:);
                     z = [z1; z2];
                     [f1z2,t1z2] = HOpartcohtw_160517(x',y',z',FTdata.fsample,7,0);
