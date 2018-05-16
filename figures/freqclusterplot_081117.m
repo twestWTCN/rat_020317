@@ -22,19 +22,19 @@ ON(:,lineind) = NaN(size(ON,1),size(lineind,2));
 if dir == 1
 %     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
 %     hold on
-    [ax(2), hp] = boundedline(fxA,mean(OFF),std(OFF),'cmap',cmap(1,:),'alpha','transparency',0.45);
+    [ax(2), hp] = boundedline(fxA,mean(OFF),std(OFF)/sqrt(numel(size(OFF,1))),'cmap',cmap(1,:),'alpha','transparency',0.45);
     
 %     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
-    [ax(1), hp] = boundedline(fxA,mean(ON),std(ON),'cmap',cmap(2,:),'alpha','transparency',0.45);
+    [ax(1), hp] = boundedline(fxA,mean(ON),std(ON)/sqrt(numel(size(ON,1))),'cmap',cmap(2,:),'alpha','transparency',0.45);
 else
 %     plot(repmat(fxA,size(OFF,1),1)',OFF','Color',cmap(1,:),'LineStyle','--','linewidth',1);
 %     hold on
-    [ax(2), hp] = boundedline(fxA,mean(OFF),std(OFF),'cmap',cmap(1,:),'alpha','transparency',0.45);
+    [ax(2), hp] = boundedline(fxA,mean(OFF),std(OFF)/sqrt(size(OFF,1)),'cmap',cmap(1,:),'alpha','transparency',0.45);
     
 %     plot(repmat(fxA,size(ON,1),1)',ON','Color',cmap(2,:),'LineStyle','--','linewidth',1);
     hold on
-    [ax(1), hp] = boundedline(fxA,mean(ON),std(ON),'cmap',cmap(2,:),'alpha','transparency',0.45);
+    [ax(1), hp] = boundedline(fxA,mean(ON),std(ON)/sqrt(numel(size(ON,1))),'cmap',cmap(2,:),'alpha','transparency',0.45);
 end
 sigfreq = stat.mask.*stat.freq;
 sigfreq(sigfreq==0) = NaN;

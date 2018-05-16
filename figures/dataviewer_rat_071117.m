@@ -1,7 +1,7 @@
 function dataviewer_rat_071117(R)
 for scale = 1%:2
     for cond = 1:2
-        for sub  = 1:length(R.subnames{cond})
+        for sub  =  1:length(R.subnames{cond})
             set(0,'DefaultAxesFontSize',16)
             set(0,'defaultlinelinewidth',1.5)
             set(0,'DefaultLineMarkerSize',5)
@@ -16,7 +16,7 @@ for scale = 1%:2
             load([R.analysispath R.pipestamp '\data\processed\' R.subnames{cond}{sub} '_' R.condnames{cond} '_' R.pipestamp '.mat'])
             raw = FTdata;
             nmelist = {[]}; ilist = [];
-            for i = 1:numel(FTdata.label)
+            for i = numel(FTdata.label):-1:1
                 nme = FTdata.label{i};
                 if ~any(strncmp(nmelist,nme,3)) | i == 1
                     if length(nme)>3; nme = nme(1:3); end
@@ -26,11 +26,16 @@ for scale = 1%:2
             end
             nmelist = {nmelist{2:end}};
             processed = FTdata.ContData;
-            cmap = linspecer(size(ilist,2));
+                cmap = [73 135 71;
+                    138 99 153;
+                    220 141 35;
+                    120 194 211];
+%                 cmap = flipud(cmap);
+            cmap = cmap./256;
             
-            for i = 1:size(ilist,2)
+            for i = size(ilist,2):-1:1
                 ofset = 0.5*(i-1);
-                plot(raw.time{1},raw.trial{1}(ilist(i),:)+ofset,'color',cmap(2,:),'linewidth',2.5)
+                plot(raw.time{1},raw.trial{1}(ilist(i),:)+ofset,'color',cmap(i,:),'linewidth',2.5) % cmap(2,:)
                 hold on
                 %                 plot(processed.time{1},processed.trial{1}(ilist(i),:)+ofset,'color',cmap(2,:),'linewidth',2.5)
             end
@@ -40,26 +45,27 @@ for scale = 1%:2
             end
             %             h = legend({'raw da','preprocessed'},'FontSize',18,'FontWeight','bold');
             %             set(h,'Position',[0.0118    0.0204    0.1272    0.1212])
-           
+            
             set(gca,'YTick',[0:0.5:(size(ilist,2)-1)*0.5])
             set(gca,'YTickLabel',nmelist)
             a = get(gca,'YTickLabel');
             set(gca,'YTickLabel',a,'fontsize',14);
-             set(gca,'Position',[0.1834    0.1108    0.7855    0.8090])
-            xlabel('time (s)','fontsize',24,'FontWeight','bold'); ylabel('amplitude (uV)','FontSize',24,'FontWeight','bold'); 
-
+            set(gca,'Position',[0.1834    0.1108    0.7855    0.8090])
+            xlabel('time (s)','fontsize',24,'FontWeight','bold'); ylabel('amplitude (mV)','FontSize',24,'FontWeight','bold');
+            
             title([R.condnames{cond} ' animal recording'],'FontSize',28,'FontWeight','bold');
             
             grid on
+            grid minor
             
             % time statistics
             tlength(cond,sub) = max(raw.time{1});
             % Save Figures
-%             if scale == 2
-%                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\preprocessing\' FTdata.subject '_short'],'-jpg',0,'-r150'); close all
-%             else
-%                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\preprocessing\' FTdata.subject '_long'],'-jpg',0,'-r150'); close all
-%             end
+            %             if scale == 2
+            %                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\preprocessing\' FTdata.subject '_short'],'-jpg',0,'-r150'); close all
+            %             else
+            %                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\preprocessing\' FTdata.subject '_long'],'-jpg',0,'-r150'); close all
+            %             end
             %             close all
             if scale == 1
                 %% Plot Spectra
@@ -67,14 +73,23 @@ for scale = 1%:2
                 set(0,'defaultlinelinewidth',2)
                 set(0,'DefaultLineMarkerSize',9)
                 set(0, 'DefaultFigurePosition', [669         189        1131         705]);
-                cmap = linspecer(size(ilist,2));
+                %                 cmap = linspecer(size(ilist,2));
+%                 cmap = [117 112 179;
+%                     230 171 2;
+%                     102 166 30;
+%                     231 41 138];
+                cmap = [73 135 71;
+                    138 99 153;
+                    220 141 35;
+                    120 194 211];
+                cmap = cmap./256;
                 figure; set(gcf,'Position',[1038 363 753 636])
-                [ax] = freqplotlog(FTdata.nsPow.Powspctrm(ilist,:),FTdata.nsPow.freq,'test',[],[],cmap)
+                [ax] = freqplotlog(-(FTdata.nsPow.Powspctrm(ilist,:)),FTdata.nsPow.freq,'test',[],[],cmap)
                 xlabel('frequency (Hz) (log scale)','fontsize',24,'FontWeight','bold'); ylabel('log normalised power','fontsize',24,'FontWeight','bold')
                 title([R.condnames{cond} ' animal spectra'],'FontSize',28,'FontWeight','bold');
-                h = legend(ax,nmelist,'FontWeight')
+                h = legend(fliplr(ax),fliplr(nmelist),'FontWeight')
                 set(h,'FontSize',18)
-                xlim(log10([4 100])); ylim([-5.5 -2])
+                xlim(log10([4 100])); % ylim([-5.5 -2])
                 %                 l = axes;
                 %                 for i = 1:size(raw.trial{1},1)
                 %                     fxA = FTdata.nsPow.freq;
@@ -84,13 +99,14 @@ for scale = 1%:2
                 %                 xlim([3 30])
                 xti = get(gca,'XTick')
                 for i = 1:size(xti,2)
-                    xtlab{i} = num2str(10^(xti(i)),2);
+                    xtlab{i} = sprintf('%2.f',10^(xti(i)));
                     %                      xtlab(i) = 10^(xti(i));
                 end
                 set(gca,'XTickLabel',xtlab)
                 grid on
+                savefigure_v2([R.analysispath R.pipestamp '\results\preprocessing\'],[FTdata.subject '_spectra'],[],'-tiff','-r300'); close all
                 
-%                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\preprocessing\' FTdata.subject '_spectra'],'-jpg',0,'-r150'); close all
+                %                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\preprocessing\' FTdata.subject '_spectra'],'-jpg',0,'-r150'); close all
             end
             close all
         end

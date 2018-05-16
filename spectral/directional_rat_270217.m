@@ -1,5 +1,5 @@
 function directional_rat_270217(R)
-granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 0; npdY = 0; npdX = 0; npd = 0;  npdW = 1; ncohXY = 0;
+granger = 0; dtf = 0; psi = 0; pdc = 0; npdZ = 0; npdY = 0; npdX = 0; npd = 1;  npdW = 0; ncohXY = 0;
 
 for cond = 1:2;
     for sub  = 1:length(R.subnames{cond})

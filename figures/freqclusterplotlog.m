@@ -23,13 +23,21 @@ ON(:,lineind) = NaN(size(ON,1),size(lineind,2));
 % Now plot
 fxA =log10(fxA);
 figure
-[ax(1), hp] = boundedline(fxA,-mean(log10(OFF)),std(log10(OFF)),'cmap',cmap(1,:),'alpha','transparency',0.45);
+[ax(2), hp] = boundedline(fxA,-mean(log10(OFF)),std(log10(OFF))/sqrt(log10(size(OFF,1))),'cmap',cmap(1,:),'alpha','transparency',0.45);
+hold on
+[xCalc,yCalc] = linregress(fxA',-mean(log10(OFF))');
+plot(xCalc(:,2),yCalc,'--','color',cmap(1,:),'linewidth',2);
+
 %     hl(1).LineWidth = 2;
 %     hout = outlinebounds(hl, hp);
 hold on
 % plot(repmat(fxA,size(OFF,1),1)',-log10(OFF)','Color',cmap(1,:),'LineStyle','--','linewidth',1);
 
-[ax(2), hp] = boundedline(fxA,-mean(log10(ON)),std(log10(ON)),'cmap',cmap(2,:),'alpha','transparency',0.45);
+[ax(1), hp] = boundedline(fxA,-mean(log10(ON)),std(log10(ON))/sqrt(log10(size(ON,1))),'cmap',cmap(2,:),'alpha','transparency',0.45);
+hold on
+[xCalc,yCalc] = linregress(fxA',-mean(log10(ON))');
+plot(xCalc(:,2),yCalc,'--','color',cmap(2,:),'linewidth',2);
+
 %     hl(1).LineWidth = 2;
 %     hout = outlinebounds(hl, hp);
 hold on
@@ -86,7 +94,7 @@ xlabel('log10 Frequency (Hz)'); ylabel(ylab); title(titular);
 if  strcmp(getenv('COMPUTERNAME'), 'SFLAP-2') == 1
     x = gca;
     for i = 1:size(x.XTick,2)
-        xtlab{i} = num2str(10^(x.XTick(i)),2);
+        xtlab{i} = sprintf('%1.f',10^(x.XTick(i)));
     end
     x.XTickLabel = xtlab;
 else

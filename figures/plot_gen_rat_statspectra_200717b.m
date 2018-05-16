@@ -150,7 +150,9 @@ for feat = 1:length(spctralist) % run through features
                     [specstat] = spectralclusterstats060317(ON,OFF,fxA(:,1)',R.sourcenames{i},5000);
                     ON = 10.^ON;
                     OFF = 10.^OFF;
-                    
+%                     save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} appender '_specstat'],'specstat')
+                    load([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} appender '_specstat'],'specstat')
+
                     %                     writespecstat(R.sourcenames{i},specstat,R)
                     [ax clustat] = freqclusterplotlog(OFF,ON,fxA(:,1)',specstat,alpha,[],[],[-0.035 -0.01],cmap);
                     if ~exist([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat'], 'dir')
@@ -160,7 +162,7 @@ for feat = 1:length(spctralist) % run through features
                 end
                 
                 % ylim([0 3e-5]);
-               
+                
                 title([R.sourcenames{i} ' power spectra'], 'Interpreter', 'none','fontsize',20,'fontweight','bold')
                 legend(ax,R.condnames)
                 ylabel('log10 normalised power','fontsize',20); xlabel('frequency (Hz)','fontsize',20);
@@ -168,7 +170,7 @@ for feat = 1:length(spctralist) % run through features
                     mkdir([R.analysispath R.pipestamp '\results\figures\spectra\' dirna]);
                 end
                 savefigure_v2([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\'],[dirna '_' R.sourcenames{i} appender '_spectra'],[],'-tiff','-r300'); close all
-%                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\' dirna '_' R.sourcenames{i} appender '_spectra'],'-jpg',0); close all
+                %                 saveallfiguresFIL([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\' dirna '_' R.sourcenames{i} appender '_spectra'],'-jpg',0); close all
             end
         elseif undirected == 1 && variate == 2
             for i = 1:length(R.sourcenames)
@@ -199,6 +201,7 @@ for feat = 1:length(spctralist) % run through features
                         OFF = vertcat(fyA{i,j,2,:});
                         alpha = 0.025;
                         [specstat] = spectralclusterstats060317(ON,OFF,fxA(:,1)',R.sourcenames{i},5000);
+                        save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} appender '_specstat'],'specstat')
                         [ax clustat] = freqclusterplot_081117(OFF,ON,fxA(:,1),specstat,alpha,[],[],ylimz,cmap);
                         if ~exist([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat'], 'dir')
                             mkdir([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat']);
@@ -214,13 +217,14 @@ for feat = 1:length(spctralist) % run through features
                     if ~exist([R.analysispath R.pipestamp '\results\figures\spectra\' dirna], 'dir')
                         mkdir([R.analysispath R.pipestamp '\results\figures\spectra\' dirna]);
                     end
-                savefigure_v2([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\'],[dirna '_' R.sourcenames{i} '_' R.sourcenames{j} appender '_spectra'],[],'-tiff','-r300'); close all
-%                     saveallfiguresFIL([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} appender '_spectra'],'-jpg',0); close all
+                    savefigure_v2([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\'],[dirna '_' R.sourcenames{i} '_' R.sourcenames{j} appender '_spectra'],[],'-tiff','-r300'); close all
+                    %                     saveallfiguresFIL([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} appender '_spectra'],'-jpg',0); close all
                 end
             end
         elseif undirected == 0 && variate == 2 %% DIRECTIONAL PLOTS
-            for i = 2:length(R.sourcenames)
-                for j = 2:length(R.sourcenames)
+%             if strncmp(spctralist{feat},'npdW',8);imin = 2; jmin = 2; else;imin = 1; jmin = 1; end
+            for i = 1:length(R.sourcenames)
+                for j = 1:length(R.sourcenames)
                     if ~strcmp(parSource,R.sourcenames{j}) & ~strcmp(parSource,R.sourcenames{i}) & i~=j
                         figure
                         dirsign = {' <-> ',' -> ',' <- '};
@@ -250,7 +254,7 @@ for feat = 1:length(spctralist) % run through features
                                     hold on
                                 end
                                 ylim(ylimz);xlim(FOI)
-%                                 legend(R.condnames)
+                                %                                 legend(R.condnames)
                             elseif statspec == 1
                                 clf;
                                 ON =[fyA{i,j,dirc,1,:}];
@@ -261,11 +265,13 @@ for feat = 1:length(spctralist) % run through features
                                 end
                                 alpha = 0.025;
                                 [specstat] = spectralclusterstats060317(ON',OFF',fxA{1}',R.sourcenames{i},5000);
+                                save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} appender '_specstat'],'specstat')
+%                                 load([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} appender '_specstat'],'specstat')
                                 [ax clustat] = freqclusterplot_081117(OFF',ON',fxA{1},specstat,alpha,[],ylabd,ylimz,cmap);
                                 legend(ax,R.condnames)
                                 %                             title([R.sourcenames{i} dirsign{dirc} R.sourcenames{j} ' Source ' dirna ' Spectra'], 'Interpreter', 'none','fontsize',20,'fontweight','bold')
                                 title([R.sourcenames{i} dirsign{dirc} R.sourcenames{j}], 'Interpreter', 'none','fontsize',20,'fontweight','bold')
-%                                 ylabel(ylabd,'fontsize',16); xlabel('Frequency (Hz)','fontsize',16)
+                                %                                 ylabel(ylabd,'fontsize',16); xlabel('Frequency (Hz)','fontsize',16)
                                 
                                 if ~exist([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat'], 'dir')
                                     mkdir([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat']);
@@ -283,9 +289,13 @@ for feat = 1:length(spctralist) % run through features
                                     end
                                     crmap = linspecer(5);
                                     [specstat] = spectralclusterstats060317(OFF',OFF_part',fxA{1}',R.sourcenames{i},5000);
+                                    save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_ON'],'specstat')
+%                                     load([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_ON'],'specstat')
                                     [clustat] = freqcluster_only_200717(OFF',ON',fxA{1},specstat,alpha,ylimz,crmap(1,:),0.005);
-                                    csvwrite([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_cluster_stat_baseline_ON.csv'],clustat)
+                                    csvwrite([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_cluster_stat_baseline_ON'],clustat)
                                     [specstat] = spectralclusterstats060317(ON',ON_part',fxA{1}',R.sourcenames{i},5000);
+                                    save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_OFF'],'specstat')
+%                                     load([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_OFF'],'specstat')
                                     [clustat] = freqcluster_only_200717(OFF',ON',fxA{1},specstat,alpha,ylimz,crmap(2,:),0.028);
                                     csvwrite([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_cluster_stat_baseline_OFF.csv'],clustat)
                                 end
@@ -299,8 +309,8 @@ for feat = 1:length(spctralist) % run through features
                         end
                         % save output
                         savefigure_v2([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\'],[dirna '_' R.sourcenames{i} '_' R.sourcenames{j} appender '_spectra'],1:3,'-tiff','-r300'); close all
-
-%                         saveallfiguresFIL([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} appender '_spectra'],'-jpg',0); close all
+                        
+                        %                         saveallfiguresFIL([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} appender '_spectra'],'-jpg',0); close all
                         close all
                     end
                 end
