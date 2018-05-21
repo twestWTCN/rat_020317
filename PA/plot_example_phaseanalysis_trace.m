@@ -32,10 +32,10 @@ function plot_example_phaseanalysis_trace(Xdata,amp,phi,dphi_12_dt,seg_ddt,ddphi
         yvec = nan(size(dphi_12_dt)); yvec(seg_ddt) = dphi_12_dt(seg_ddt);
         hold on; plot(tvec(1:length(yvec)),yvec,'LineWidth',2)
         hold on; plot([0 Xdata.time{1}(end)],[ddphi_ci ddphi_ci],'k--');
-        plot([0 Xdata.time{1}(end)],[-ddphi_ci -ddphi_ci],'k--'); ylim([-0.1 0.1])
+        plot([0 Xdata.time{1}(end)],[-ddphi_ci -ddphi_ci],'k--'); ylim([-75 75])
         % Amplitude Adjusted SRP
 %         dphi_12_dt = dphi_12_dt.*TAmpNormNeg(2:end)';
-%         plot(Xdata.time{1}(2:end),dphi_12_dt,'b'); %xlim([60 70]);
+%         plot(Xdata.time{1}(2:end),dphi_12_dt,'b'); %xlim([60 70]);    
 
         %         % PA Time Series
         %         ax(3) = subplot(4,1,3);

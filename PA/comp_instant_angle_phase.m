@@ -13,8 +13,11 @@ dphi_12 = unwrap(phi(:,1)-phi(:,2));
 % % ampw = unwrap((amp(:,1).*amp(:,2))./(max(amp(:,1))*max(amp(:,2))));  %%
 % % dphi_12 = angle(ampw.*exp(i.*(phi(:,1)-phi(:,2))));%%
 % % dphi_12 = (dphi_12-(1/sqrt(length(phi(:,1)))))./(1-(1/sqrt(length(phi(:,1))))); %%
-dphi_12_dt = diff(dphi_12);
- 
+
+dphi_12_dt = sgolaydiff(dphi_12,fsamp,2,3);
+dphi_12_dt = dphi_12_dt(2:end);
+% dphi_12_dt = diff(dphi_12);
+%  ax(1) =subplot(2,1,1);  plot(dphi_12_dt); ax(2) = subplot(2,1,2);  plot(dphi_12_dt_sg); linkaxes(ax,'x');
 % % if LowAmpFix == 1
 % %     TAmp =  amp(:,1).* amp(:,2);
 % %     TAmpNorm = (TAmp./mean(TAmp));

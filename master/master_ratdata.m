@@ -25,7 +25,7 @@ for o = 1:length(section)
                         convertFT_rat_190717(R)
                     case 2
                         % Preprocess Data
-                        R.clear.pp = 1;
+                        R.clear.pp = 0;
                         preprocess_rat_111016b(R)
                     case 3 % Preprocesing Long Epoch
                         %                         R.clear.ppe = 0;

@@ -46,23 +46,29 @@ else
     
 end
 
-R.PA.SType = 2; % 1 = sliding window PLI and 2 = SRP
-R.PA.bwid = [0.5 0.5 0.5];
+% Phase Analy
+R.PA.optimalPLFrqMeth = 'PLV'; % Use PLI or PLV to determine frequency for bandpass
+R.PA.AmpSurrN = 50; % Number of draws to compute surrogate distributions for stats.
+R.PA.SRPeps_prctile = 0.01; % Stable relative phase Percentile
+R.PA.SNReps_prctile = 50; % Signal Noise Percentile
+R.PA.PLVeps_prctile = 99.9; % PLV  Percentile
+
+R.PA.plotting.realignMeth = 'WghtedPrctleAmp75'; % Method to align phases
+% 'MaxLBAmp' - Maximum Low Beta Amp
+% 'WghtedMeanAmp' -Wghted Mean Low Beta Amp
+% 'WghtedPrctleAmp##' -Wghted Prctile Low Beta at ==%
+% 'PhiMean'  - Centre to Phi Mean
+% 'PhiHist'  - Bin with highest frequency
+% 'noshift'  - Dont do any shifting
+R.PA.SType = 1; % 1 = sliding window PLI and 2 = SRP
+R.PA.bwid = [1 1 1];
 R.PA.mwid = 3; % minimum SRP length (cycles)
-R.PA.SRPeps = 0.006; %0.006;
 R.PA.LowAmpFix = 0; % 1 if SRP is adjusted to account for low amplitude
-R.PA.optimalPLFrqMeth = 'PLV';
-R.PA.slidingwindow = 1;
-R.PA.PLVeps =  0.50;
-R.PA.AmpSurrN = 500;
-R.PA.WinOver = 0.98;
-% R.PA.stn_lb_frq = 14;
-R.PA.SNR_eps = -1;
-R.PA.SNReps_prctile = 50;
-R.PA.SRPeps_prctile = 10;
-R.PA.plotting.realignMeth = 'noshift';
+
+R.PA.interpolgrid = 1; % For interpolating the grids
 R.PA.frqrange{1} = R.bbounds(1,1):0.5: R.bbounds(1,2);
 R.PA.frqrange{2} =  R.bbounds(2,1):0.5: R.bbounds(2,2);
 R.PA.frqrange{3} =  R.bbounds(3,1):0.5: R.bbounds(3,2);
-R.PA.SNR = [-2 -1.5 -1.25]; %-1.5;
 
+R.PA.slidingwindow = 0.50;
+R.PA.WinOver = 0.99;

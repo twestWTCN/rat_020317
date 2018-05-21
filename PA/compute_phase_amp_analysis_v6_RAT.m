@@ -8,11 +8,11 @@ for band = [2 3]
     for cond =1:2
         for sub  = 1:length(R.subnames{cond})
             load([R.analysispath R.pipestamp '\data\processed\' R.subnames{cond}{sub} '_' R.condnames{cond} '_' R.pipestamp '.mat'])
-            stnlabs = find(strncmp('STN',FTdata.nsIcoh.label,3));
-            ctxlab = find(strncmp('M2',FTdata.nsIcoh.label,3));
+            stnlabs = find(strncmp('STN',FTdata.wpli.label,3));
+            ctxlab = find(strncmp('M2',FTdata.wpli.label,3));
             stncoh = []; frqcoh = [];
             for i = 1:length(stnlabs)
-                [stncoh(i), frqcoh(i)] = max(FTdata.nsIcoh.nsIcohspctrm(1,stnlabs(i),FTdata.nsIcoh.freq > R.bbounds(band,1) & FTdata.nsIcoh.freq <= R.bbounds(band,2)));
+                [stncoh(i), frqcoh(i)] = max(FTdata.wpli.wpli_debiasedspctrm(1,stnlabs(i),FTdata.wpli.freq > R.bbounds(band,1) & FTdata.wpli.freq <= R.bbounds(band,2)));
             end
             stnind = stnlabs(stncoh == max(stncoh));
             frq =frqcoh(stncoh == max(stncoh))+ R.bbounds(band,1);
@@ -22,7 +22,7 @@ for band = [2 3]
             Xdata.fsample = FTdata.fsample;
             % Find sub-band frequency
             for i = 1:length(stnlabs)
-                [stncoh(i), frqcoh(i)] = max(FTdata.nsIcoh.nsIcohspctrm(1,stnlabs(i),FTdata.nsIcoh.freq > R.bbounds(band-1,1) & FTdata.nsIcoh.freq <= R.bbounds(band-1,2)));
+                [stncoh(i), frqcoh(i)] = max(FTdata.wpli.wpli_debiasedspctrm(1,stnlabs(i),FTdata.wpli.freq > R.bbounds(band-1,1) & FTdata.wpli.freq <= R.bbounds(band-1,2)));
             end
             stn_lb_frq =frqcoh(stncoh == max(stncoh))+ R.bbounds(band-1,1);
             
@@ -33,17 +33,16 @@ for band = [2 3]
             
             % Compute optimal frequencies based on PLV
             [maxfrq,maxPLV] = compute_optimal_PhaseLockFrq(R,Xdata,band,stn_lb_frq); %
-            [SRPeps Ampeps SNR_eps] = phase_amp_surrComp(R,Xdata,band,maxfrq,stn_lb_frq,R.PA.AmpSurrN);
+            [SRPeps Ampeps SNR_eps PLVeps] = phase_amp_surrComp(R,Xdata,band,maxfrq,stn_lb_frq,R.PA.AmpSurrN);
             SNR_eps_z(1) = 10*log10(SNR_eps(1)./signalEnvAmp(1));
             SNR_eps_z(2) =  10*log10(SNR_eps(2)./signalEnvAmp(2));
             SNR_eps_z(3) =  10*log10(SNR_eps(3)./signalEnvAmp(2));
             % Compute data transforms (Hilbert)
             [amp phi dphi_12 dphi_12_dt Xdata] = comp_instant_angle_phase(Xdata,maxfrq,stn_lb_frq,R.PA.bwid,band);
-            
-            % Sliding Window PLV
+                        % Sliding Window PLV
             if R.PA.SType == 1
                 fsamp = Xdata.fsample;
-                WinSize = R.PA.slidingwindow*fsamp;
+                WinSize = floor(R.PA.slidingwindow*fsamp);
                 [PLV PLV_tvec] = slidingwindowPLV(WinSize,phi,R.PA.WinOver);
                 PLV_tvec = Xdata.time{1}(PLV_tvec);
                 amp_sw = cont2slidingwindow(amp,WinSize,floor(R.PA.WinOver*WinSize));
@@ -54,13 +53,12 @@ for band = [2 3]
                 dphi_12_sw = cont2slidingwindow(dphi_12,WinSize,round(R.PA.WinOver*WinSize));
                 
                 SW_sampr = max(diff(PLV_tvec));
-                tseries = dphi_12_sw; qstable = find(PLV>R.PA.PLVeps);
+                tseries = dphi_12_sw; qstable = find(PLV>PLVeps);
                 mwid = R.PA.mwid;
                 period = (mwid/frq)/SW_sampr;
                 % Minimum number of cycles to consider sync
-                [phi_dist amp_dist seg_ddt1 segL_ddt consecSegs H] = analysestablesegs(qstable,tseries,amp,period,mwid,fsamp,SNR_eps_z(1:2),[],[],Ampeps,SNR_sw);
-                
-                %                         plot_example_phaseanalysis_trace(Xdata,amp,phi,PLV,seg_ddt1,SRPeps,SW_sampr);
+                [phi_dist amp_dist seg_ddt1 segL_ddt consecSegs H] = analysestablesegs(qstable,tseries,amp,period,mwid,1/SW_sampr,SNR_eps_z(1:2),[],[],Ampeps,SNR_sw);
+%                  plot_example_phaseanalysis_SW(Xdata,amp,phi,PLV,seg_ddt1,PLVeps,PLV_tvec);
             elseif R.PA.SType == 2 % Sliding Window PhaseAng. Stability
                 clear SNR_sw
                 SNR_sw(:,1) = 10.*log10(amp(:,1)./signalEnvAmp(1));
@@ -82,7 +80,7 @@ for band = [2 3]
                 [phi_dist amp_dist seg_ddt1 segL_ddt consecSegs H] = analysestablesegs(qstable,tseries,amp,period,mwid,fsamp,SNR_eps_z(1:2),[],[],Ampeps,SNR_sw);
 %                 figure(2)
 %                 plot_example_phaseanalysis_trace(Xdata,amp,phi,dphi_12_dt,seg_ddt1,SRPeps,fsamp);
-%                 clf(1); clf(2)
+%                 clf(1);
             end
             
             % Save to data
