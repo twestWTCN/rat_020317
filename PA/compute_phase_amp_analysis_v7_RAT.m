@@ -9,7 +9,7 @@ for band = [2 3]
         for sub  = 1:length(R.subnames{cond})
             load([R.analysispath R.pipestamp '\data\processed\' R.subnames{cond}{sub} '_' R.condnames{cond} '_' R.pipestamp '.mat'])
             stnlabs = find(strncmp('STN',FTdata.wpli.label,3));
-            ctxlab = find(strncmp('M1',FTdata.wpli.label,3));
+            ctxlab = find(strncmp('M2',FTdata.wpli.label,3));
             stncoh = []; frqcoh = [];
             for stchi = 1:length(stnlabs)
                 stnind = stnlabs(stchi);
@@ -47,15 +47,19 @@ for band = [2 3]
                     SNR_sw(:,1) = 10.*log10(amp_sw(:,1)./signalEnvAmp(1));
                     SNR_sw(:,2) =  10.*log10(amp_sw(:,2)./signalEnvAmp(2));
                     SNR_sw(:,3) =  10.*log10(amp_sw(:,3)./signalEnvAmp(2));
-                    dphi_12_sw = cont2slidingwindow(dphi_12,WinSize,round(R.PA.WinOver*WinSize));
                     
+                    % Plot SNR
+%                     figure(1)
+%                     SNR_Inspector(R,PLV_tvec,SNR_sw,SNR_eps_z,band,{'M2','STN'})
+
+                    dphi_12_sw = cont2slidingwindow(dphi_12,WinSize,round(R.PA.WinOver*WinSize));
                     SW_sampr = max(diff(PLV_tvec));
                     tseries = dphi_12_sw; qstable = find(PLV>PLVeps);
                     mwid = R.PA.mwid;
                     period = (mwid/frq)/SW_sampr;
                     % Minimum number of cycles to consider sync
                     [phi_dist{stchi} amp_dist{stchi} seg_ddt1{stchi} segL_ddt{stchi} consecSegs H] = analysestablesegs(qstable,tseries,amp,period,mwid,1/SW_sampr,SNR_eps_z(1:2),[],[],Ampeps,SNR_sw);
-                    %                  plot_example_phaseanalysis_SW(Xdata,amp,phi,PLV,seg_ddt1{i},PLVeps,PLV_tvec);
+                    %                                      plot_example_phaseanalysis_SW(Xdata,amp,phi,PLV,seg_ddt1{stchi},PLVeps,PLV_tvec);
                 elseif R.PA.SType == 2 % Sliding Window PhaseAng. Stability
                     clear SNR_sw
                     SNR_sw(:,1) = 10.*log10(amp(:,1)./signalEnvAmp(1));

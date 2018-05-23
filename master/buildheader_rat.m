@@ -48,10 +48,10 @@ end
 
 % Phase Analy
 R.PA.optimalPLFrqMeth = 'PLV'; % Use PLI or PLV to determine frequency for bandpass
-R.PA.AmpSurrN = 50; % Number of draws to compute surrogate distributions for stats.
-R.PA.SRPeps_prctile = 0.01; % Stable relative phase Percentile
+R.PA.AmpSurrN = 200; % Number of draws to compute surrogate distributions for stats.
+R.PA.SRPeps_prctile = 1; % Stable relative phase Percentile
 R.PA.SNReps_prctile = 50; % Signal Noise Percentile
-R.PA.PLVeps_prctile = 99.9; % PLV  Percentile
+R.PA.PLVeps_prctile = 99; % PLV  Percentile
 
 R.PA.plotting.realignMeth = 'WghtedPrctleAmp75'; % Method to align phases
 % 'MaxLBAmp' - Maximum Low Beta Amp

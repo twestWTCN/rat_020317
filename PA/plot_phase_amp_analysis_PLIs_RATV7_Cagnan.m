@@ -1,12 +1,11 @@
-%function plot_phase_amp_analysis_PLIs_RAT_Cagnan(R)
-clear
-% if nargin<1
+function plot_phase_amp_analysis_PLIs_RATV7_Cagnan(R)
+if nargin<1
 R = buildheader_rat();
-% end
+end
 close all
 analynames = {'Segment Length','CTX High Beta Amp','STN High Beta Amp','STN Low Beta Amp','STN/CTX High Beta Amp Correlation','Causal Density'};
 
-QX = 10 ; % Bin Size
+QX = 8 ; % Bin Size
 for band = [2 3]
     for cond =1:2
         for sub  = 1:length(R.subnames{cond})
