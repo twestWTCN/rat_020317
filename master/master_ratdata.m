@@ -6,8 +6,9 @@ dbstop if error
 
 %% Build header to be used for analysis programs
 R = buildheader_rat;
+add_ratdata_paths()
 % Select methods
-section = [1 4];    % Sections
+section = [4];    % Sections
 procs = {
     [2 4]... % 1: Extraction, preprocessing, and analysis
     []...   % 2: Statistics
@@ -87,11 +88,11 @@ for o = 1:length(section)
                         set(0,'defaultlinelinewidth',3)
                         set(0,'DefaultLineMarkerSize',9)
                         set(0, 'DefaultFigurePosition', [12    57   605   550]);
-                        R.spectra.featspecs = {'nsPow'}; %'npdX','npdY','npdZ','npdW',} %'nsPow','nsIcoh','npd','npdX','npdY',,'nsIcoh','npd'}; %,'npdW','npdZ'}; %,'npdX','npdW','npdZ','npdZ'} %,'npdY','npdZ'}; %'nsPow''nsIcoh','npd','nsicoh','npd','npdX','npdY','npdZ','npdW'}; %'ncohXY'}; 'nsPow', %power','coherence','wpli','npd','npdX','npdY','npdZ','npdW'}; %'npd','dtf','power','coherence','wpli','granger','icoherence','npd'};%,'power','coherence','wpli'
+                        R.spectra.featspecs = {'wpli'}; %'npdX','npdY','npdZ','npdW',} %'nsPow','nsIcoh','npd','npdX','npdY',,'nsIcoh','npd'}; %,'npdW','npdZ'}; %,'npdX','npdW','npdZ','npdZ'} %,'npdY','npdZ'}; %'nsPow''nsIcoh','npd','nsicoh','npd','npdX','npdY','npdZ','npdW'}; %'ncohXY'}; 'nsPow', %power','coherence','wpli','npd','npdX','npdY','npdZ','npdW'}; %'npd','dtf','power','coherence','wpli','granger','icoherence','npd'};%,'power','coherence','wpli'
                         %                         plot_gen_rat_statspectra_060317(R)
                         plot_gen_rat_statspectra_200717b(R)
                     case 3 % Boxplots
-                        R.boxplot.featspecs =  {'npd'};%,'dfaae','power','coh','wpli','npd','pow'};
+                        R.boxplot.featspecs =  {'wpli'};%,'dfaae','power','coh','wpli','npd','pow'};
                         boxplot_ttest_rat_050816(R);
                 end
             end
@@ -101,7 +102,7 @@ for o = 1:length(section)
             for i = 1:length(procs{section(o)})
                 switch procs{section(o)}(i)
                     case 1 % Compute phase angles
-                        compute_phase_amp_analysis_v7_RAT(R)
+                        compute_phase_amp_analysis_v8_RAT(R)
                     case 2 % DO Cagnan analyses
                         plot_phase_amp_analysis_PLIs_RATV7_Cagnan(R)
                 end

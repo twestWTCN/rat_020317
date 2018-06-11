@@ -72,7 +72,7 @@ for band = [2 3]
                 %             if exitflag == 1
                 %                 hold on; plot(xq,yq,'color',cmap(5,:));
                 %             end
-                ylimlist = {[0 0],[0 1.5],[0 1.5]};
+                ylimlist = {[0 0],[0 1.75],[0 1.75]};
                 ylim(ylimlist{band}); grid on
                 title(['STN-' R.sourcenames{1} ' ' R.bandnames{band} ' Phase vs ' R.bandnames{band} ' Frame Length'])
                 ylabel(['LB Segment Length (s)']); xlabel('Relative Phase')

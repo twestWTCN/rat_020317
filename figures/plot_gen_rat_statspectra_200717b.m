@@ -73,7 +73,7 @@ for feat = 1:length(spctralist) % run through features
             if variate == 1 % univariate (power)
                 clear fxA
                 for i = 1:length(R.sourcenames)
-                    set1 = find(strncmp([R.sourcenames{i}], FTdata.nsPow.label,size(R.sourcenames{i},2)));
+                    set1 = find(strncmp([R.sourcenames{i}], FTdata.(spctralist{feat}).label,size(R.sourcenames{i},2)));
                     fxA(:,i) = FTdata.nsPow.freq;
                     fyA{i,cond,sub} = mean(FTdata.nsPow.Powspctrm(set1,:),1);
                 end
@@ -86,9 +86,9 @@ for feat = 1:length(spctralist) % run through features
                     
                     clear fxA
                     for i = 1:length(R.sourcenames)
-                        set1 = find(strncmp([R.sourcenames{i}], FTdata.nsPow.label,size(R.sourcenames{i},2)));
+                        set1 = find(strncmp([R.sourcenames{i}], FTdata.(spctralist{feat}).label,size(R.sourcenames{i},2)));
                         for j = 1:length(R.sourcenames)
-                            set2 = find(strncmp([R.sourcenames{j}], FTdata.nsPow.label,size(R.sourcenames{j},2)));
+                            set2 = find(strncmp([R.sourcenames{j}], FTdata.(spctralist{feat}).label,size(R.sourcenames{j},2)));
                             if exist('imagset','var')
                                 fy = squeeze(nanmean(nanmean(abs(imag(FTdata.(spctralist{feat}).(spctrname)(set1,set2,:))),1),2));
                             else
