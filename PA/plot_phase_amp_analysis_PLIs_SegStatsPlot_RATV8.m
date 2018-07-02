@@ -7,12 +7,12 @@ close all
 % WIP
 % Percentage Change over what? Baseline or baseline of segments?
 QX = 8 ; % Bin Size
-for band = [2 3]
+for band = 3 %[2 3]
     cmapint = linspecer(3);
     cmap = linspecer(5);
     cmapint(4,:) = cmap(5,:);
     for cond =1:2
-        for sub  = 1:length(R.subnames{cond})
+        for sub  = 2%:length(R.subnames{cond})
             load([R.analysispath R.pipestamp '\data\processed\' R.subnames{cond}{sub} '_' R.condnames{cond} '_' R.pipestamp '.mat'])
             stnlabs = find(strncmp('STN',FTdata.wpli.label,3));
             for stchi = 1:length(stnlabs)
@@ -23,11 +23,18 @@ for band = [2 3]
                 %                 HdistSegCol = FTdata.PA(band).H_dist_save(1,:);
                 tendtot = FTdata.PA(band).timevec{1}(end)-FTdata.PA(band).timevec{1}(1);
                 
+                phiBin = linspace(-pi,pi,QX);
+                for i = 1:3
+                    [shiftPhiCol phipeak(i) binind]= findAmpPhi(R,ampSegCol(i,:),relativePhiCol,phiBin);
+                    selind{i} = find(phi>=phiBin(binind) & phi<=phiBin(binind+1));
+                end
+                [shiftPhiCol phipeak(4) bind]= findAmpPhi(R,segLCol,relativePhiCol,phiBin);
+                 selind{4} = find(phi>=phiBin(binind) & phi<=phiBin(binind+1));
                 
                 % Length/Amp Correlations
                 for i = 1:3
-                    x = segLCol'; y = ampSegCol(i,:)';
-                    [x y] = remnan(x,y);
+                    x = segLCol(selind{i})'; y = ampSegCol(i,selind{i})';
+                    [x,y] = remnan(x,y);
                     % %                         nleg = 50; nseg  = fix(length(x)/nleg);
                     % %                         x = reshape(x(1:nleg*nseg),nseg,nleg);
                     % %                         y = reshape(y(1:nleg*nseg),nseg,nleg);

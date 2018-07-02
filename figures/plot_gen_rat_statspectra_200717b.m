@@ -264,7 +264,7 @@ for feat = 1:length(spctralist) % run through features
                                     OFF = [fyA{i,j,2,2,:}]+[fyA{i,j,3,2,:}];
                                 end
                                 alpha = 0.025;
-                                [specstat] = spectralclusterstats060317(ON',OFF',fxA{1}',R.sourcenames{i},5000);
+                                [specstat] = spectralclusterstats060317(ON',OFF',fxA{1}',R.sourcenames{i},10);
                                 save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} appender '_specstat'],'specstat')
 %                                 load([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} appender '_specstat'],'specstat')
                                 [ax clustat] = freqclusterplot_081117(OFF',ON',fxA{1},specstat,alpha,[],ylabd,ylimz,cmap);
@@ -288,12 +288,12 @@ for feat = 1:length(spctralist) % run through features
                                         OFF = [fyA_base{i,j,2,2,:}]+[fyA_base{i,j,3,2,:}];
                                     end
                                     crmap = linspecer(5);
-                                    [specstat] = spectralclusterstats060317(OFF',OFF_part',fxA{1}',R.sourcenames{i},5000);
+                                    [specstat] = spectralclusterstats060317(OFF',OFF_part',fxA{1}',R.sourcenames{i},10);
                                     save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_ON'],'specstat')
 %                                     load([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_ON'],'specstat')
                                     [clustat] = freqcluster_only_200717(OFF',ON',fxA{1},specstat,alpha,ylimz,crmap(1,:),0.005);
                                     csvwrite([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_cluster_stat_baseline_ON'],clustat)
-                                    [specstat] = spectralclusterstats060317(ON',ON_part',fxA{1}',R.sourcenames{i},5000);
+                                    [specstat] = spectralclusterstats060317(ON',ON_part',fxA{1}',R.sourcenames{i},10);
                                     save([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_OFF'],'specstat')
 %                                     load([R.analysispath R.pipestamp '\results\figures\spectra\' dirna '\clusterstat\' dirna '_' R.sourcenames{i} '_' R.sourcenames{j} '_' appender '_dirc' num2str(dirc) '_spec_stat_baseline_OFF'],'specstat')
                                     [clustat] = freqcluster_only_200717(OFF',ON',fxA{1},specstat,alpha,ylimz,crmap(2,:),0.028);
