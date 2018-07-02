@@ -5,9 +5,10 @@ R.subnames = {{'C1','C2','C3','C4','C5','C6','C8'}...
 % EXCLUDED RAT C7 - IpsiEEG
 R.bbounds = [5 10; 14 24; 25 40]; % Bands of interest
 R.bandnames = {'Alpha','Low Beta','High beta'};
+R.bandinits = {'\alpha','\beta_1','\beta_2'};
 R.bandnames_nospace = {'alpha','low_beta','high_beta'};
 R.source_inport_names = {'fEEG','GP','STR','STN'};
-R.sourcenames = {'M2','GPe','STR','STN'};
+R.sourcenames = {'M1','GPe','STR','STN'};
 R.condnames = {'control','lesion'};
 R.FOI = [4 100]; % Frequencies of interest
 R.pp.ds = 250; % sample rate to downsample to
@@ -47,7 +48,7 @@ else
 end
 
 % Phase Analy
-R.PA.optimalPLFrqMeth = 'PLV'; % Use PLI or PLV to determine frequency for bandpass
+R.PA.optimalPLFrqMeth = 'WPLV'; % Use PLI or PLV to determine frequency for bandpass
 R.PA.AmpSurrN = 200; % Number of draws to compute surrogate distributions for stats.
 R.PA.SRPeps_prctile = 1; % Stable relative phase Percentile
 R.PA.SNReps_prctile = 50; % Signal Noise Percentile
@@ -61,7 +62,7 @@ R.PA.plotting.realignMeth = 'WghtedPrctleAmp75'; % Method to align phases
 % 'PhiHist'  - Bin with highest frequency
 % 'noshift'  - Dont do any shifting
 R.PA.SType = 1; % 1 = sliding window PLI and 2 = SRP
-R.PA.bwid = [1 1 1];
+R.PA.bwid = [1 1.25 1.5];
 R.PA.mwid = 3; % minimum SRP length (cycles)
 R.PA.LowAmpFix = 0; % 1 if SRP is adjusted to account for low amplitude
 

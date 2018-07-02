@@ -6,9 +6,9 @@ close all
 analynames = {'Segment Length','CTX High Beta Amp','STN High Beta Amp','STN Low Beta Amp','STN/CTX High Beta Amp Correlation','Causal Density'};
 
 QX = 8 ; % Bin Size
-for band = [2 3]
+for band = 3;%[2 3]
     for cond =1:2
-        for sub  = 1:length(R.subnames{cond})
+        for sub  = 2%:length(R.subnames{cond})
             load([R.analysispath R.pipestamp '\data\processed\' R.subnames{cond}{sub} '_' R.condnames{cond} '_' R.pipestamp '.mat'])
             stnlabs = find(strncmp('STN',FTdata.wpli.label,3));
             
@@ -43,7 +43,7 @@ for band = [2 3]
                 obs = {[R.sourcenames{1} ' ' R.bandnames{band}],['STN ' R.bandnames{band}],['STN ' R.bandnames{band-1}]};
                 for i = 1:3
                     subplot(4,2,panlist(cond,i))
-                    hl = plot(phiBinMid', ampBinMu(i,:)','--','color',cmap(i,:)); hold on
+                    hl = plot(phiBinMid', ampBinMu(i,:)','--','color',cmap(i,:),'LineWidth',2); hold on
                     % %                         [hl, hp] = boundedline(phiBinMid', ampBinMu(i,:)',ampBinSEM(i,:)','cmap',cmap(i,:)); hold on
                     % %                         if cond == 1; hl.LineStyle = '--'; end
                     % %                         hp.FaceAlpha = 0.4;
@@ -62,7 +62,7 @@ for band = [2 3]
                 cmap = linspecer(5);
                 panlist(:,4) = [7; 8];
                 subplot(4,2,   panlist(cond,4))
-                hl = plot(phiBinMid', segBinMu(1,:)','--','color',cmap(5,:)); hold on
+                hl = plot(phiBinMid', segBinMu(1,:)','--','color',cmap(5,:),'LineWidth',2); hold on
                 % %                     [hl, hp] = boundedline(phiBinMid', segBinMu(1,:)',segBinSEM(1,:)','cmap',cmap(5,:));
                 % %                     if cond == 1; hl.LineStyle = '--'; end
                 % %                     hp.FaceAlpha = 0.4;
@@ -72,7 +72,7 @@ for band = [2 3]
                 %             if exitflag == 1
                 %                 hold on; plot(xq,yq,'color',cmap(5,:));
                 %             end
-                ylimlist = {[0 0],[0 1.5],[0 1.5]};
+                ylimlist = {[0 0],[0 1.75],[0 1.75]};
                 ylim(ylimlist{band}); grid on
                 title(['STN-' R.sourcenames{1} ' ' R.bandnames{band} ' Phase vs ' R.bandnames{band} ' Frame Length'])
                 ylabel(['LB Segment Length (s)']); xlabel('Relative Phase')
